@@ -1,3 +1,4 @@
+import os
 import unittest
 import importlib.util
 
@@ -22,6 +23,17 @@ class QRCodeGeneratorTests(unittest.TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertIn(b"QR Code", response.data)
+
+    def test_get_port_uses_env_port(self):
+        previous_port = os.environ.get("PORT")
+        os.environ["PORT"] = "8001"
+        try:
+            self.assertEqual(module.get_port(), 8001)
+        finally:
+            if previous_port is None:
+                os.environ.pop("PORT", None)
+            else:
+                os.environ["PORT"] = previous_port
 
 
 if __name__ == "__main__":

@@ -1,5 +1,6 @@
+import os
 from pathlib import Path
-from flask import Flask, render_template_string, request, redirect, url_for
+from flask import Flask, render_template_string, request, url_for
 import qrcode
 
 app = Flask(__name__)
@@ -55,17 +56,28 @@ def create_qr_code(url: str, output_path: str | Path = "static/qr.png") -> Path:
     return output
 
 
+def get_port() -> int:
+    """Return the port expected by Azure App Service or fall back to 5000."""
+    port_value = os.getenv("PORT")
+    if port_value:
+        try:
+            return int(port_value)
+        except ValueError:
+            pass
+    return 5000
+
+
 @app.route("/", methods=["GET", "POST"])
 def index():
     qr_path = None
     if request.method == "POST":
         url = request.form.get("url", "").strip()
         if url:
-            output_file = create_qr_code(url, "static/qr.png")
+            create_qr_code(url, "static/qr.png")
             qr_path = url_for("static", filename="qr.png")
             return render_template_string(HTML_TEMPLATE, qr_path=qr_path)
     return render_template_string(HTML_TEMPLATE, qr_path=None)
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    app.run(debug=False, host="0.0.0.0", port=get_port())
