@@ -1,20 +1,46 @@
-# Introduction 
-TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
+# QR Code Generator Web App
 
-# Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
-1.	Installation process
-2.	Software dependencies
-3.	Latest releases
-4.	API references
+This project is a simple student-friendly web application that generates a QR code from any URL.
 
-# Build and Test
-TODO: Describe and show how to build your code and run the tests. 
+## Features
+- Open a simple web page in the browser
+- Enter a website URL
+- Generate and display a QR code instantly
 
-# Contribute
-TODO: Explain how other users and developers can contribute to make your code better. 
+## Prerequisites
+- Python 3
+- Flask
+- qrcode
+- Pillow
 
-If you want to learn more about creating good readme files then refer the following [guidelines](https://docs.microsoft.com/en-us/azure/devops/repos/git/create-a-readme?view=azure-devops). You can also seek inspiration from the below readme files:
-- [ASP.NET Core](https://github.com/aspnet/Home)
-- [Visual Studio Code](https://github.com/Microsoft/vscode)
-- [Chakra Core](https://github.com/Microsoft/ChakraCore)
+## Install dependencies
+Run:
+
+```powershell
+py -m pip install -r requirements.txt
+```
+
+## Run the app
+Start the web app with:
+
+```powershell
+py QR_code_generator.py
+```
+
+Then open:
+
+```text
+http://127.0.0.1:5000
+```
+
+## Demo usage
+1. Open the web page in your browser.
+2. Enter a URL such as https://example.com.
+3. Click Generate QR Code.
+4. The QR code will appear on the page.
+
+## Project files
+- QR_code_generator.py: Flask web app
+- requirements.txt: Python dependencies
+- tests/test_qr_code_generator.py: simple test for the app
+
