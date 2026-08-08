@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dev-python
+  annotations:
+    seccomp.security.alpha.kubernetes.io/pod: "runtime/default"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dev-python
+  template:
+    metadata:
+      labels:
+        app: dev-python
+    spec:
+      nodeSelector:
+        "apitype": model
+      containers:
+      - name: dev-python
+        image: skillit.azurecr.io/bobby_python:latest
+        imagePullPolicy: Always
+        securityContext:
+          capabilities:
+            drop:
+              - NET_RAW
+              - ALL
+        readinessProbe:
+          tcpSocket:
+            port: 5000
+          initialDelaySeconds: 50
+        resources:
+          requests:
+            cpu: 100m
+            memory: 256Mi
+          limits:
+            cpu: 250m
+            memory: 512Mi
+        ports:
+        - containerPort: 5000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dev-python
+spec:
+  type: ClusterIP
+  ports:
+  - port: 5000
+  selector:
+    app: dev-python
